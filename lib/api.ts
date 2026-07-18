@@ -144,3 +144,19 @@ export function resetPassword(token: string, password: string) {
     body: JSON.stringify({ password }),
   });
 }
+
+export interface Stats {
+  totalPaid: number;
+  totalTransactions: number;
+  byStatus: { pending: number; success: number; failed: number; refunded: number };
+  successRate: number;
+  totalUsers?: number;
+}
+
+export function getMyStats(token: string) {
+  return request<Stats>("/api/payments/stats", {}, token);
+}
+
+export function getAdminStats(token: string) {
+  return request<Stats>("/api/admin/stats", {}, token);
+}

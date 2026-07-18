@@ -3,13 +3,16 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { getAdminTransactions, Payment } from "@/lib/api";
+import { getAdminTransactions, getAdminStats, Payment, Stats } from "@/lib/api";
 import AdminTransactionTable from "@/components/AdminTransactionTable";
 import StatusFilter from "@/components/StatusFilter";
+import StatsGrid from "@/components/StatsGrid";
 
 export default function AdminPage() {
   const { user, token, loading } = useAuth();
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
   const [status, setStatus] = useState("all");
   const [email, setEmail] = useState("");
   const [page, setPage] = useState(1);
@@ -29,9 +32,21 @@ export default function AdminPage() {
       .finally(() => setTxLoading(false));
   }, [token, status, email, page]);
 
+  const loadStats = useCallback(() => {
+    if (!token) return;
+    setStatsLoading(true);
+    getAdminStats(token)
+      .then(setStats)
+      .finally(() => setStatsLoading(false));
+  }, [token]);
+
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   if (loading) {
     return (
@@ -68,6 +83,10 @@ export default function AdminPage() {
         </Link>
       </header>
 
+      <div className="mb-6">
+        <StatsGrid stats={stats} loading={statsLoading} />
+      </div>
+
       <div className="flex flex-wrap items-center gap-3 mb-4">
         <StatusFilter
           value={status}
@@ -87,7 +106,14 @@ export default function AdminPage() {
         />
       </div>
 
-      <AdminTransactionTable payments={payments} onRefunded={load} loading={txLoading} />
+      <AdminTransactionTable
+        payments={payments}
+        onRefunded={() => {
+          load();
+          loadStats();
+        }}
+        loading={txLoading}
+      />
 
       {!txLoading && pages > 1 && (
         <div className="flex items-center justify-center gap-4 mt-4">

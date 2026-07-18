@@ -3,15 +3,18 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { getMyTransactions, Payment } from "@/lib/api";
+import { getMyTransactions, getMyStats, Payment, Stats } from "@/lib/api";
 import AuthForm from "@/components/AuthForm";
 import PaymentForm from "@/components/PaymentForm";
 import TransactionList from "@/components/TransactionList";
 import StatusFilter from "@/components/StatusFilter";
+import StatsGrid from "@/components/StatsGrid";
 
 export default function Home() {
   const { user, token, loading, signOut } = useAuth();
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
   const [status, setStatus] = useState("all");
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
@@ -28,9 +31,21 @@ export default function Home() {
       .finally(() => setTxLoading(false));
   }, [token, status, page]);
 
+  const loadStats = useCallback(() => {
+    if (!token) return;
+    setStatsLoading(true);
+    getMyStats(token)
+      .then(setStats)
+      .finally(() => setStatsLoading(false));
+  }, [token]);
+
   useEffect(() => {
     loadTransactions();
   }, [loadTransactions]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   if (loading) {
     return (
@@ -75,7 +90,14 @@ export default function Home() {
       </header>
 
       <div className="space-y-8">
-        <PaymentForm onInitiated={loadTransactions} />
+        <StatsGrid stats={stats} loading={statsLoading} />
+
+        <PaymentForm
+          onInitiated={() => {
+            loadTransactions();
+            loadStats();
+          }}
+        />
 
         <div>
           <div className="flex items-center justify-between mb-3">
