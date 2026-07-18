@@ -17,7 +17,16 @@ export interface Payment {
   currency?: string;
   gatewayResponse?: string;
   paidAt?: string;
+  refundedAt?: string;
   createdAt: string;
+  user?: { name: string; email: string } | string;
+}
+
+export interface PaginatedPayments {
+  payments: Payment[];
+  total: number;
+  page: number;
+  pages: number;
 }
 
 class ApiError extends Error {
@@ -82,9 +91,10 @@ export function initializePayment(
   );
 }
 
-export function getMyTransactions(token: string) {
-  return request<{ payments: Payment[]; total: number }>(
-    "/api/payments/my-transactions",
+export function getMyTransactions(token: string, status?: string) {
+  const query = status && status !== "all" ? `?status=${status}` : "";
+  return request<PaginatedPayments>(
+    `/api/payments/my-transactions${query}`,
     {},
     token
   );
@@ -94,6 +104,26 @@ export function verifyPayment(token: string, reference: string) {
   return request<{ status: string; payment: Payment }>(
     `/api/payments/verify/${reference}`,
     {},
+    token
+  );
+}
+
+export function getAdminTransactions(
+  token: string,
+  filters: { status?: string; email?: string; page?: number } = {}
+) {
+  const params = new URLSearchParams();
+  if (filters.status && filters.status !== "all") params.set("status", filters.status);
+  if (filters.email) params.set("email", filters.email);
+  if (filters.page) params.set("page", String(filters.page));
+  const query = params.toString() ? `?${params.toString()}` : "";
+  return request<PaginatedPayments>(`/api/admin/transactions${query}`, {}, token);
+}
+
+export function refundPayment(token: string, reference: string) {
+  return request<{ message: string; payment: Payment }>(
+    `/api/admin/refund/${reference}`,
+    { method: "POST" },
     token
   );
 }

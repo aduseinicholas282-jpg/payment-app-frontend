@@ -1,20 +1,23 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getMyTransactions, Payment } from "@/lib/api";
 import AuthForm from "@/components/AuthForm";
 import PaymentForm from "@/components/PaymentForm";
 import TransactionList from "@/components/TransactionList";
+import StatusFilter from "@/components/StatusFilter";
 
 export default function Home() {
   const { user, token, loading, signOut } = useAuth();
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [status, setStatus] = useState("all");
 
   const loadTransactions = useCallback(() => {
     if (!token) return;
-    getMyTransactions(token).then((res) => setPayments(res.payments));
-  }, [token]);
+    getMyTransactions(token, status).then((res) => setPayments(res.payments));
+  }, [token, status]);
 
   useEffect(() => {
     loadTransactions();
@@ -47,21 +50,34 @@ export default function Home() {
             Welcome, {user.name.split(" ")[0]}
           </h1>
         </div>
-        <button
-          onClick={signOut}
-          className="text-sm text-ink-soft hover:text-teal transition-colors mt-1"
-        >
-          Sign out
-        </button>
+        <div className="flex items-center gap-4 mt-1">
+          {user.role === "admin" && (
+            <Link
+              href="/admin"
+              className="text-sm text-teal font-medium hover:underline"
+            >
+              Admin
+            </Link>
+          )}
+          <button
+            onClick={signOut}
+            className="text-sm text-ink-soft hover:text-teal transition-colors"
+          >
+            Sign out
+          </button>
+        </div>
       </header>
 
       <div className="space-y-8">
         <PaymentForm onInitiated={loadTransactions} />
 
         <div>
-          <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-3">
-            No. 003 — History
-          </p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase">
+              No. 003 — History
+            </p>
+            <StatusFilter value={status} onChange={setStatus} />
+          </div>
           <TransactionList payments={payments} />
         </div>
       </div>
