@@ -54,7 +54,7 @@ export default function AdminPage() {
     <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-12">
       <header className="flex items-start justify-between mb-8">
         <div>
-          <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-1">
+          <p className="font-mono text-xs tracking-[0.2em] text-violet uppercase mb-1 [text-shadow:0_0_12px_var(--violet-glow)]">
             Admin
           </p>
           <h1 className="font-display text-2xl font-semibold text-ink">
@@ -82,7 +82,7 @@ export default function AdminPage() {
             setPage(1);
           }}
           placeholder="Filter by email…"
-          className="rounded border border-paper-line px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-teal"
+          className="rounded-lg bg-bg-elevated border border-surface-line px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-violet"
         />
       </div>
 

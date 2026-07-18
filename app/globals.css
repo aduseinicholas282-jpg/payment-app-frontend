@@ -1,49 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f3ec;
-  --paper-line: #dcd5c4;
-  --ink: #1c2321;
-  --ink-soft: #5b5750;
-  --teal: #0f5257;
-  --teal-soft: #e4eeee;
-  --gold: #a8752e;
-  --success: #2f6f4e;
-  --success-soft: #e6efe8;
-  --error: #8c3b3b;
-  --error-soft: #f3e6e6;
+  --bg: #0a0d14;
+  --bg-elevated: #12161f;
+  --surface: #161b26;
+  --surface-line: rgba(255, 255, 255, 0.08);
+  --ink: #eef1f7;
+  --ink-soft: #8b93a7;
+  --teal: #2de1c2;
+  --teal-glow: rgba(45, 225, 194, 0.45);
+  --violet: #a855f7;
+  --violet-glow: rgba(168, 85, 247, 0.45);
+  --gold: #ffb545;
+  --gold-glow: rgba(255, 181, 69, 0.45);
+  --error: #ff5c7a;
+  --error-glow: rgba(255, 92, 122, 0.45);
 }
 
 @theme inline {
-  --color-paper: var(--paper);
-  --color-paper-line: var(--paper-line);
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-line: var(--surface-line);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-teal: var(--teal);
-  --color-teal-soft: var(--teal-soft);
+  --color-violet: var(--violet);
   --color-gold: var(--gold);
-  --color-success: var(--success);
-  --color-success-soft: var(--success-soft);
   --color-error: var(--error);
-  --color-error-soft: var(--error-soft);
-  --font-display: var(--font-serif);
+  --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 }
 
 body {
   font-family: var(--font-sans);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(45, 225, 194, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.08), transparent 40%),
+    var(--bg);
+  min-height: 100vh;
 }
 
-/* Faint ruled-ledger lines behind content, like paper stationery */
-.ledger-bg {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 43px,
-    var(--paper-line) 43px,
-    var(--paper-line) 44px
-  );
+/* Glossy card: dark glass surface with a subtle top sheen and glow border */
+.glass-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0) 40%), var(--surface);
+  border: 1px solid var(--surface-line);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
+}
+
+/* Glossy button: gradient fill + colored glow, lifts slightly on hover */
+.glow-btn {
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 60%), var(--btn-color, var(--teal));
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 8px 24px -8px var(--btn-glow, var(--teal-glow));
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.glow-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.18) inset, 0 12px 28px -8px var(--btn-glow, var(--teal-glow));
+}
+
+.glow-dot {
+  box-shadow: 0 0 8px 1px var(--dot-glow, var(--teal-glow));
 }
 
 input, select, textarea {

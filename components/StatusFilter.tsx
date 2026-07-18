@@ -19,7 +19,7 @@ export default function StatusFilter({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="rounded border border-paper-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft focus:outline-none focus:ring-2 focus:ring-teal"
+      className="rounded-lg bg-bg-elevated border border-surface-line px-3 py-1.5 text-xs font-medium text-ink-soft focus:outline-none focus:ring-2 focus:ring-teal"
     >
       {OPTIONS.map((o) => (
         <option key={o.value} value={o.value}>

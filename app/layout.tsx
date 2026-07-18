@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
-const serif = Source_Serif_4({
-  variable: "--font-serif",
+const display = Space_Grotesk({
+  variable: "--font-display",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
 });
@@ -34,9 +34,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${serif.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#F6F3EC] text-[#1C2321]">
+      <body className="min-h-full flex flex-col text-ink">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

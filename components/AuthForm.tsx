@@ -33,7 +33,7 @@ export default function AuthForm() {
   return (
     <div className="w-full max-w-sm mx-auto">
       <div className="mb-8 text-center">
-        <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-2">
+        <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-2 [text-shadow:0_0_12px_var(--teal-glow)]">
           No. 001 — Account
         </p>
         <h1 className="font-display text-3xl font-semibold text-ink">
@@ -48,7 +48,7 @@ export default function AuthForm() {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white border border-paper-line rounded-lg p-6 space-y-4 shadow-sm"
+        className="glass-card rounded-2xl p-6 space-y-4"
       >
         {mode === "signup" && (
           <div>
@@ -59,7 +59,7 @@ export default function AuthForm() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded border border-paper-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+              className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
               placeholder="Nicholas Adusei"
             />
           </div>
@@ -73,7 +73,7 @@ export default function AuthForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded border border-paper-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
             placeholder="you@example.com"
           />
         </div>
@@ -87,13 +87,13 @@ export default function AuthForm() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded border border-paper-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
             placeholder="At least 8 characters"
           />
         </div>
 
         {error && (
-          <p className="text-sm text-error bg-error-soft rounded px-3 py-2">
+          <p className="text-sm text-error bg-error/10 border border-error/20 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
@@ -101,7 +101,8 @@ export default function AuthForm() {
         <button
           type="submit"
           disabled={busy}
-          className="w-full bg-teal text-white rounded py-2.5 text-sm font-medium hover:bg-teal/90 transition-colors disabled:opacity-60"
+          style={{ "--btn-color": "var(--teal)", "--btn-glow": "var(--teal-glow)" } as React.CSSProperties}
+          className="glow-btn w-full text-bg rounded-lg py-2.5 text-sm font-semibold disabled:opacity-60"
         >
           {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
         </button>

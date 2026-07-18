@@ -43,7 +43,7 @@ export default function Home() {
     <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-12">
       <header className="flex items-start justify-between mb-10">
         <div>
-          <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-1">
+          <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-1 [text-shadow:0_0_12px_var(--teal-glow)]">
             Ledger
           </p>
           <h1 className="font-display text-2xl font-semibold text-ink">
