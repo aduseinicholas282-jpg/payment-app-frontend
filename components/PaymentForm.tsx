@@ -27,10 +27,7 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
   }
 
   return (
-    <div className="glass-card rounded-2xl p-6">
-      <p className="font-mono text-xs tracking-[0.2em] text-violet uppercase mb-1 [text-shadow:0_0_12px_var(--violet-glow)]">
-        No. 002 — New entry
-      </p>
+    <div className="glass-card rounded-2xl p-6" style={{ "--card-glow": "var(--violet-glow)" } as React.CSSProperties}>
       <h2 className="font-display text-xl font-semibold text-ink mb-4">
         Make a payment
       </h2>

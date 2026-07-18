@@ -35,33 +35,75 @@
 
 body {
   font-family: var(--font-sans);
-  background:
-    radial-gradient(circle at 15% 0%, rgba(45, 225, 194, 0.08), transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.08), transparent 40%),
-    var(--bg);
+  background: var(--bg);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Glossy card: dark glass surface with a subtle top sheen and glow border */
+/* Large soft glowing orbs, like ambient 3D-render lighting drifting behind glass */
+.orb-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.55;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.orb-teal {
+  width: 480px; height: 480px;
+  top: -120px; left: -100px;
+  background: radial-gradient(circle, var(--teal), transparent 70%);
+}
+.orb-violet {
+  width: 520px; height: 520px;
+  top: 10%; right: -160px;
+  background: radial-gradient(circle, var(--violet), transparent 70%);
+  animation-delay: -8s;
+}
+.orb-gold {
+  width: 380px; height: 380px;
+  bottom: -140px; left: 20%;
+  background: radial-gradient(circle, var(--gold), transparent 70%);
+  animation-delay: -14s;
+  opacity: 0.35;
+}
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, 30px) scale(1.08); }
+}
+
+/* Glossy card: dark glass surface with a strong top sheen, bevel, and depth */
 .glass-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0) 40%), var(--surface);
-  border: 1px solid var(--surface-line);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0) 45%), var(--surface);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.14) inset,
+    0 0 0 1px rgba(0,0,0,0.3),
+    0 30px 60px -25px rgba(0,0,0,0.7),
+    0 0 60px -20px var(--card-glow, rgba(45, 225, 194, 0.15));
+  backdrop-filter: blur(20px);
 }
 
 /* Glossy button: gradient fill + colored glow, lifts slightly on hover */
 .glow-btn {
-  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 60%), var(--btn-color, var(--teal));
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 8px 24px -8px var(--btn-glow, var(--teal-glow));
+  background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 55%), var(--btn-color, var(--teal));
+  box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset, 0 10px 30px -8px var(--btn-glow, var(--teal-glow));
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .glow-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.18) inset, 0 12px 28px -8px var(--btn-glow, var(--teal-glow));
+  box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset, 0 14px 34px -8px var(--btn-glow, var(--teal-glow));
 }
 
 .glow-dot {
-  box-shadow: 0 0 8px 1px var(--dot-glow, var(--teal-glow));
+  box-shadow: 0 0 10px 2px var(--dot-glow, var(--teal-glow));
 }
 
 input, select, textarea {

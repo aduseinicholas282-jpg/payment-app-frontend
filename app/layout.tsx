@@ -37,7 +37,14 @@ export default function RootLayout({
       className={`${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col text-ink">
-        <AuthProvider>{children}</AuthProvider>
+        <div className="orb-field" aria-hidden>
+          <div className="orb orb-teal" />
+          <div className="orb orb-violet" />
+          <div className="orb orb-gold" />
+        </div>
+        <div className="relative z-10 flex flex-col flex-1">
+          <AuthProvider>{children}</AuthProvider>
+        </div>
       </body>
     </html>
   );

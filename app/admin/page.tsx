@@ -54,9 +54,6 @@ export default function AdminPage() {
     <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-12">
       <header className="flex items-start justify-between mb-8">
         <div>
-          <p className="font-mono text-xs tracking-[0.2em] text-violet uppercase mb-1 [text-shadow:0_0_12px_var(--violet-glow)]">
-            Admin
-          </p>
           <h1 className="font-display text-2xl font-semibold text-ink">
             All transactions
           </h1>

@@ -33,9 +33,6 @@ export default function AuthForm() {
   return (
     <div className="w-full max-w-sm mx-auto">
       <div className="mb-8 text-center">
-        <p className="font-mono text-xs tracking-[0.2em] text-teal uppercase mb-2 [text-shadow:0_0_12px_var(--teal-glow)]">
-          No. 001 — Account
-        </p>
         <h1 className="font-display text-3xl font-semibold text-ink">
           {mode === "signin" ? "Open your ledger" : "Start a new ledger"}
         </h1>
