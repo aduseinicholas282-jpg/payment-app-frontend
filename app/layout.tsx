@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { ToastProvider } from "@/context/ToastContext";
 
 const display = Space_Grotesk({
   variable: "--font-display",
@@ -43,7 +44,9 @@ export default function RootLayout({
           <div className="orb orb-gold" />
         </div>
         <div className="relative z-10 flex flex-col flex-1">
-          <AuthProvider>{children}</AuthProvider>
+          <ToastProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </ToastProvider>
         </div>
       </body>
     </html>

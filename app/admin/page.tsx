@@ -15,14 +15,18 @@ export default function AdminPage() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [txLoading, setTxLoading] = useState(true);
 
   const load = useCallback(() => {
     if (!token) return;
-    getAdminTransactions(token, { status, email, page }).then((res) => {
-      setPayments(res.payments);
-      setPages(res.pages);
-      setTotal(res.total);
-    });
+    setTxLoading(true);
+    getAdminTransactions(token, { status, email, page })
+      .then((res) => {
+        setPayments(res.payments);
+        setPages(res.pages);
+        setTotal(res.total);
+      })
+      .finally(() => setTxLoading(false));
   }, [token, status, email, page]);
 
   useEffect(() => {
@@ -52,7 +56,7 @@ export default function AdminPage() {
 
   return (
     <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-12">
-      <header className="flex items-start justify-between mb-8">
+      <header className="flex flex-wrap items-start justify-between gap-y-3 mb-8">
         <div>
           <h1 className="font-display text-2xl font-semibold text-ink">
             All transactions
@@ -83,9 +87,9 @@ export default function AdminPage() {
         />
       </div>
 
-      <AdminTransactionTable payments={payments} onRefunded={load} />
+      <AdminTransactionTable payments={payments} onRefunded={load} loading={txLoading} />
 
-      {pages > 1 && (
+      {!txLoading && pages > 1 && (
         <div className="flex items-center justify-center gap-4 mt-4">
           <button
             disabled={page <= 1}

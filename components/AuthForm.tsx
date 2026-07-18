@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import Link from "next/link";
 import { login, register, ApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
@@ -103,6 +104,15 @@ export default function AuthForm() {
         >
           {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
         </button>
+
+        {mode === "signin" && (
+          <Link
+            href="/forgot-password"
+            className="block text-center text-xs text-ink-soft hover:text-teal transition-colors"
+          >
+            Forgot password?
+          </Link>
+        )}
       </form>
 
       <button

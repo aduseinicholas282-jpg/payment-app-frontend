@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Payment, refundPayment, ApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 const STATUS_STYLES: Record<
   Payment["status"],
@@ -22,14 +23,32 @@ function formatDate(iso: string) {
   });
 }
 
+function SkeletonRow() {
+  return (
+    <div className="flex items-center justify-between gap-4 px-5 py-3">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        <span className="h-2 w-2 rounded-full shrink-0 skeleton" />
+        <div className="space-y-1.5 flex-1">
+          <div className="h-3 w-28 rounded skeleton" />
+          <div className="h-2.5 w-20 rounded skeleton" />
+        </div>
+      </div>
+      <div className="h-3 w-16 rounded skeleton" />
+    </div>
+  );
+}
+
 export default function AdminTransactionTable({
   payments,
   onRefunded,
+  loading = false,
 }: {
   payments: Payment[];
   onRefunded: () => void;
+  loading?: boolean;
 }) {
   const { token } = useAuth();
+  const { showToast } = useToast();
   const [busyRef, setBusyRef] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,12 +58,25 @@ export default function AdminTransactionTable({
     setBusyRef(reference);
     try {
       await refundPayment(token, reference);
+      showToast(`Refund issued for ${reference}`, "success");
       onRefunded();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Refund failed");
+      const message = err instanceof ApiError ? err.message : "Refund failed";
+      setError(message);
+      showToast(message, "error");
     } finally {
       setBusyRef(null);
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="glass-card rounded-2xl overflow-hidden divide-y divide-surface-line">
+        {[0, 1, 2].map((i) => (
+          <SkeletonRow key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (payments.length === 0) {

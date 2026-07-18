@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { Payment } from "@/lib/api";
+import TransactionDetailModal from "./TransactionDetailModal";
 
 const STATUS_STYLES: Record<
   Payment["status"],
@@ -20,7 +22,43 @@ function formatDate(iso: string) {
   });
 }
 
-export default function TransactionList({ payments }: { payments: Payment[] }) {
+function SkeletonRow() {
+  return (
+    <div className="flex items-center justify-between gap-4 px-5 py-3">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        <span className="h-2 w-2 rounded-full shrink-0 skeleton" />
+        <div className="space-y-1.5 flex-1">
+          <div className="h-3 w-24 rounded skeleton" />
+          <div className="h-2.5 w-16 rounded skeleton" />
+        </div>
+      </div>
+      <div className="space-y-1.5 text-right">
+        <div className="h-3 w-16 rounded skeleton ml-auto" />
+        <div className="h-2.5 w-12 rounded skeleton ml-auto" />
+      </div>
+    </div>
+  );
+}
+
+export default function TransactionList({
+  payments,
+  loading = false,
+}: {
+  payments: Payment[];
+  loading?: boolean;
+}) {
+  const [selected, setSelected] = useState<Payment | null>(null);
+
+  if (loading) {
+    return (
+      <div className="glass-card rounded-2xl overflow-hidden divide-y divide-surface-line">
+        {[0, 1, 2].map((i) => (
+          <SkeletonRow key={i} />
+        ))}
+      </div>
+    );
+  }
+
   if (payments.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
@@ -32,38 +70,44 @@ export default function TransactionList({ payments }: { payments: Payment[] }) {
   }
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden">
-      <div className="divide-y divide-surface-line">
-        {payments.map((p) => {
-          const s = STATUS_STYLES[p.status];
-          return (
-            <div
-              key={p._id}
-              className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white/[0.03] transition-colors"
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <span
-                  className={`h-2 w-2 rounded-full shrink-0 glow-dot ${s.dot}`}
-                  style={{ "--dot-glow": s.glow } as React.CSSProperties}
-                  aria-hidden
-                />
-                <div className="min-w-0">
-                  <p className="font-mono text-xs uppercase text-ink-soft truncate">
-                    {p.reference}
-                  </p>
-                  <p className="text-xs text-ink-soft/70">{formatDate(p.createdAt)}</p>
+    <>
+      <div className="glass-card rounded-2xl overflow-hidden">
+        <div className="divide-y divide-surface-line">
+          {payments.map((p) => {
+            const s = STATUS_STYLES[p.status];
+            return (
+              <button
+                key={p._id}
+                onClick={() => setSelected(p)}
+                className="w-full flex items-center justify-between gap-4 px-5 py-3 hover:bg-white/[0.03] transition-colors text-left"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span
+                    className={`h-2 w-2 rounded-full shrink-0 glow-dot ${s.dot}`}
+                    style={{ "--dot-glow": s.glow } as React.CSSProperties}
+                    aria-hidden
+                  />
+                  <div className="min-w-0">
+                    <p className="font-mono text-xs uppercase text-ink-soft truncate">
+                      {p.reference}
+                    </p>
+                    <p className="text-xs text-ink-soft/70">{formatDate(p.createdAt)}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="text-right shrink-0">
-                <p className="font-mono text-sm font-medium text-ink">
-                  {p.currency || "GHS"} {p.amount.toFixed(2)}
-                </p>
-                <p className={`text-xs font-medium ${s.text}`}>{s.label}</p>
-              </div>
-            </div>
-          );
-        })}
+                <div className="text-right shrink-0">
+                  <p className="font-mono text-sm font-medium text-ink">
+                    {p.currency || "GHS"} {p.amount.toFixed(2)}
+                  </p>
+                  <p className={`text-xs font-medium ${s.text}`}>{s.label}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+      {selected && (
+        <TransactionDetailModal payment={selected} onClose={() => setSelected(null)} />
+      )}
+    </>
   );
 }

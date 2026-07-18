@@ -91,8 +91,11 @@ export function initializePayment(
   );
 }
 
-export function getMyTransactions(token: string, status?: string) {
-  const query = status && status !== "all" ? `?status=${status}` : "";
+export function getMyTransactions(token: string, status?: string, page = 1) {
+  const params = new URLSearchParams();
+  if (status && status !== "all") params.set("status", status);
+  if (page) params.set("page", String(page));
+  const query = params.toString() ? `?${params.toString()}` : "";
   return request<PaginatedPayments>(
     `/api/payments/my-transactions${query}`,
     {},
@@ -126,4 +129,18 @@ export function refundPayment(token: string, reference: string) {
     { method: "POST" },
     token
   );
+}
+
+export function forgotPassword(email: string) {
+  return request<{ message: string; devResetUrl?: string }>(
+    "/api/auth/forgot-password",
+    { method: "POST", body: JSON.stringify({ email }) }
+  );
+}
+
+export function resetPassword(token: string, password: string) {
+  return request<{ message: string }>(`/api/auth/reset-password/${token}`, {
+    method: "POST",
+    body: JSON.stringify({ password }),
+  });
 }

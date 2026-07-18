@@ -78,6 +78,27 @@ body {
   to { transform: translate(40px, 30px) scale(1.08); }
 }
 
+@media (max-width: 640px) {
+  .orb-teal, .orb-violet { width: 280px; height: 280px; }
+  .orb-gold { width: 220px; height: 220px; }
+  .orb { filter: blur(60px); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, rgba(255,255,255,0.06) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
 /* Glossy card: dark glass surface with a strong top sheen, bevel, and depth */
 .glass-card {
   position: relative;

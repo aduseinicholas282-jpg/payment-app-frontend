@@ -3,9 +3,11 @@
 import { useState, FormEvent } from "react";
 import { initializePayment, ApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 export default function PaymentForm({ onInitiated }: { onInitiated: () => void }) {
   const { token, user } = useAuth();
+  const { showToast } = useToast();
   const [amount, setAmount] = useState("");
   const [email, setEmail] = useState(user?.email || "");
   const [error, setError] = useState<string | null>(null);
@@ -19,9 +21,12 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
     try {
       const result = await initializePayment(token, email, Number(amount));
       onInitiated();
+      showToast("Redirecting to Paystack…", "info");
       window.location.href = result.authorization_url;
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong");
+      const message = err instanceof ApiError ? err.message : "Something went wrong";
+      setError(message);
+      showToast(message, "error");
       setBusy(false);
     }
   }
