@@ -80,6 +80,12 @@ export default function Home() {
               Admin
             </Link>
           )}
+          <Link
+            href="/settings"
+            className="text-sm text-ink-soft hover:text-teal transition-colors"
+          >
+            Settings
+          </Link>
           <button
             onClick={signOut}
             className="text-sm text-ink-soft hover:text-teal transition-colors"

@@ -160,3 +160,30 @@ export function getMyStats(token: string) {
 export function getAdminStats(token: string) {
   return request<Stats>("/api/admin/stats", {}, token);
 }
+
+export function updateProfile(token: string, name: string, email: string) {
+  return request<User>("/api/auth/me", {
+    method: "PUT",
+    body: JSON.stringify({ name, email }),
+  }, token);
+}
+
+export function changePassword(
+  token: string,
+  currentPassword: string,
+  newPassword: string
+) {
+  return request<{ message: string }>(
+    "/api/auth/change-password",
+    { method: "POST", body: JSON.stringify({ currentPassword, newPassword }) },
+    token
+  );
+}
+
+export function deleteAccount(token: string) {
+  return request<{ message: string }>(
+    "/api/auth/me",
+    { method: "DELETE" },
+    token
+  );
+}
