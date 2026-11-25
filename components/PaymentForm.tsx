@@ -97,4 +97,3 @@ export default function PaymentForm({ onInitiated, presetAmount }: { onInitiated
     </div>
   );
 }
-
