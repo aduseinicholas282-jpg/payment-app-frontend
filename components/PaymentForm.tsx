@@ -32,37 +32,45 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
   }
 
   return (
-    <div className="glass-card p-5 sm:p-6" style={{ "--card-glow": "var(--violet-glow)" } as React.CSSProperties}>
-      <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.15em] text-teal">Secure checkout</p>
-      <h2 className="font-display mb-5 text-[20px] font-bold tracking-[-0.03em] text-ink sm:text-[22px]">
-        Make a payment
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="payment-widget">
+      <div className="payment-widget-header">
+        <span className="payment-widget-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M3 10h18m-13 5h3" /></svg>
+        </span>
         <div>
-          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
+          <h2 className="payment-widget-title">Make a payment</h2>
+          <p className="payment-widget-description">Enter your details to continue with Paystack.</p>
+        </div>
+        <span className="payment-secure-label">Secure checkout</span>
+      </div>
+      <form onSubmit={handleSubmit} className="payment-form">
+        <div className="payment-field">
+          <label className="payment-label" htmlFor="payment-email">
             Email for receipt
           </label>
           <input
+            id="payment-email"
             required
             type="email"
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 text-[15px]"
+            className="payment-input w-full px-4 py-3 text-[15px]"
           />
         </div>
-        <div>
-          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
+        <div className="payment-field">
+          <label className="payment-label" htmlFor="payment-amount">
             Amount (GHS)
           </label>
           <input
+            id="payment-amount"
             required
             type="number"
             min="1"
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full px-4 py-3 font-mono text-[15px]"
+            className="payment-input w-full px-4 py-3 font-mono text-[15px]"
             placeholder="0.00"
           />
         </div>
@@ -76,8 +84,8 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
         <button
           type="submit"
           disabled={busy}
-          style={{ "--btn-color": "var(--violet)", "--btn-glow": "var(--violet-glow)" } as React.CSSProperties}
-          className="glow-btn min-h-12 w-full rounded-xl py-3 text-[15px] text-white disabled:opacity-60"
+          style={{ "--btn-color": "var(--teal)", "--btn-glow": "var(--teal-glow)" } as React.CSSProperties}
+          className="glow-btn payment-submit min-h-12 w-full rounded-xl py-3 text-[15px] text-bg disabled:opacity-60"
         >
           {busy ? "Redirecting to Paystack…" : "Pay now"}
         </button>
