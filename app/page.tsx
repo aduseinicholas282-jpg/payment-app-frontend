@@ -225,6 +225,19 @@ export default function Home() {
                 </p>
               </div>
 
+              <div className="ledger-3d-stage" aria-hidden="true">
+                <div className="ledger-3d-card">
+                  <div className="ledger-3d-card-top">
+                    <LedgerMark small />
+                    <span className="ledger-3d-brand">LEDGER</span>
+                    <span className="ledger-3d-signal"><i /><i /><i /></span>
+                  </div>
+                  <div className="ledger-3d-chip"><i /></div>
+                  <div className="ledger-3d-lines"><i /><i /><i /></div>
+                  <span className="ledger-3d-caption">SECURE PAYMENTS</span>
+                </div>
+              </div>
+
               <div className="account-card-actions">
                 <a className="account-action account-action--primary" href="#make-payment">
                   <span className="account-action-icon" aria-hidden="true">+</span>
