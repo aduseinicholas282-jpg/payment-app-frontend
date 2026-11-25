@@ -105,7 +105,7 @@ export default function Home() {
 
   if (!user || !token) {
     return (
-      <main className="flex-1 flex items-center justify-center px-4 py-10 sm:py-16">
+      <main className="auth-page">
         <AuthForm />
       </main>
     );

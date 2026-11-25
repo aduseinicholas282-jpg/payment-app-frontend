@@ -61,6 +61,30 @@ button, a, select { -webkit-tap-highlight-color: transparent; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
 ::selection { color: var(--bg); background: var(--teal); }
 a { color: inherit; }
+.auth-page { width: 100%; min-height: 100svh; display: flex; align-items: center; justify-content: center; padding: 34px 18px; }
+.auth-shell { width: min(432px, 100%); margin: auto; }
+.auth-heading { margin: 0 0 23px; text-align: center; }
+.auth-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 25px; }
+.auth-logo { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid rgba(69,223,165,.23); border-radius: 14px; background: linear-gradient(145deg, rgba(69,223,165,.13), rgba(69,223,165,.035)); color: var(--teal); }
+.auth-logo svg { width: 23px; height: 23px; }
+.auth-brand-name { margin: 0; color: #f4f7f5; font-family: var(--font-display); font-size: 24px; font-weight: 830; letter-spacing: -.055em; }
+.auth-title { margin: 0; color: #f4f7f5; font-family: var(--font-display); font-size: clamp(26px, 7vw, 30px); font-weight: 800; letter-spacing: -.05em; line-height: 1.18; }
+.auth-description { max-width: 340px; margin: 9px auto 0; color: #aab5b0; font-size: 14px; line-height: 1.65; }
+.auth-card { display: grid; gap: 19px; padding: 22px; border: 1px solid rgba(222,234,239,.11); border-radius: 22px; background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 55%), rgba(17,22,25,.96); box-shadow: 0 24px 70px -42px rgba(0,0,0,.9); }
+.auth-tabs { min-height: 54px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 5px; border: 1px solid rgba(222,234,239,.065); border-radius: 15px; background: rgba(5,8,10,.68); }
+.auth-tab { min-height: 44px; border: 1px solid transparent; border-radius: 11px; background: transparent; color: #a4aeab; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .16s, color .16s, border-color .16s; }
+.auth-tab:hover { color: var(--ink); }
+.auth-tab--active { border-color: rgba(222,234,239,.1); background: #202729; color: #f2f7f4; box-shadow: 0 3px 8px rgba(0,0,0,.2); }
+.auth-field { display: grid; gap: 8px; }
+.auth-label { color: #d0d8d4; font-size: 13px; font-weight: 700; }
+.auth-input { width: 100%; min-height: 54px !important; padding: 0 15px !important; border: 1px solid rgba(222,234,239,.12) !important; border-radius: 13px !important; background: rgba(6,10,12,.72) !important; color: #f3f7f4; font-size: 16px !important; }
+.auth-input::placeholder { color: #82908b; }
+.auth-input:focus { border-color: rgba(69,223,165,.55) !important; box-shadow: 0 0 0 3px rgba(69,223,165,.09) !important; }
+.auth-submit { width: 100%; min-height: 54px; border-radius: 13px; padding: 0 18px; font-size: 14px; font-weight: 800; cursor: pointer; }
+.auth-forgot { display: block; min-height: 44px; padding: 10px 0 0; color: #bac4bf; font-size: 13px; font-weight: 650; text-align: center; text-decoration: none; transition: color .15s; }
+.auth-forgot:hover { color: var(--teal); }
+.auth-security { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 14px 0 0; color: #9aa7a1; font-size: 11px; text-align: center; }
+.auth-security span { width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; background: rgba(69,223,165,.1); color: var(--teal); font-size: 10px; }
 .orb-field { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .orb { position: absolute; border-radius: 9999px; filter: blur(110px); opacity: 0.12; }
 .orb-teal { width: 430px; height: 430px; top: -260px; left: calc(50% - 450px); background: var(--teal); }
@@ -249,6 +273,11 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
   main { scroll-margin-top: 12px; }
   .dashboard-page { min-height: 100vh; padding: 0 16px calc(94px + env(safe-area-inset-bottom)); }
   .dashboard-container { width: 100%; }
+  .auth-page { align-items: flex-start; padding: clamp(30px, 9vh, 72px) 16px 28px; }
+  .auth-heading { margin-bottom: 21px; }
+  .auth-brand { margin-bottom: 22px; }
+  .auth-card { gap: 17px; padding: 18px; border-radius: 20px; }
+  .auth-security { margin-top: 15px; font-size: 10px; }
   .dashboard-header { height: 68px; grid-template-columns: 1fr auto; }
   .ledger-mark { width: 36px; height: 36px; border-radius: 12px; }
   .ledger-mark svg { width: 21px; height: 21px; }
