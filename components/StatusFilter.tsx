@@ -19,7 +19,8 @@ export default function StatusFilter({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="rounded-lg bg-bg-elevated border border-surface-line px-3 py-1.5 text-xs font-medium text-ink-soft focus:outline-none focus:ring-2 focus:ring-teal"
+      aria-label="Filter transactions by status"
+      className="min-h-10 rounded-xl px-3 py-2 text-[13px] font-semibold text-ink-soft"
     >
       {OPTIONS.map((o) => (
         <option key={o.value} value={o.value}>
@@ -29,3 +30,4 @@ export default function StatusFilter({
     </select>
   );
 }
+
