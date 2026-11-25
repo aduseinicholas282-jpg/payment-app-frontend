@@ -47,6 +47,8 @@ export default function Home() {
   const [statsLoading, setStatsLoading] = useState(true);
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
+  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "six-months" | "yearly">("monthly");
+  const [planAmount, setPlanAmount] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [txLoading, setTxLoading] = useState(true);
@@ -112,6 +114,12 @@ export default function Home() {
   const firstName = user.name.trim().split(/\s+/)[0] || "there";
   const totalPaid = stats?.totalPaid ?? 0;
   const transactionCount = stats?.totalTransactions ?? 0;
+  const billingMonths = billingPeriod === "monthly" ? 1 : billingPeriod === "six-months" ? 6 : 12;
+  const plans = [
+    { name: "Promotion", price: 30, description: "A simple start for your account." },
+    { name: "Gold", price: 70, description: "More room for regular payments." },
+    { name: "Diamond", price: 150, description: "The complete Ledger experience." },
+  ];
 
   return (
     <main className="dashboard-page" id="home">
@@ -226,8 +234,38 @@ export default function Home() {
               <StatsGrid stats={stats} loading={statsLoading} />
             </section>
 
+            <section className="plans-section" aria-labelledby="plans-heading">
+              <div className="section-heading">
+                <div>
+                  <p className="dashboard-eyebrow">LEDGER MEMBERSHIP</p>
+                  <h2 id="plans-heading">Choose a subscription plan</h2>
+                </div>
+                <label className="plan-period-control">
+                  <span className="sr-only">Billing period</span>
+                  <select value={billingPeriod} onChange={(event) => setBillingPeriod(event.target.value as typeof billingPeriod)}>
+                    <option value="monthly">Monthly</option>
+                    <option value="six-months">6 Months</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </label>
+              </div>
+              <p className="plans-note">Choose a tier and billing period. Checkout is processed securely through Paystack.</p>
+              <div className="plan-cards">
+                {plans.map((plan) => (
+                  <article className="plan-card" key={plan.name}>
+                    <span className="plan-card-name">{plan.name}</span>
+                    <p className="plan-card-description">{plan.description}</p>
+                    <p className="plan-price"><span>GHS</span> {formatMoney(plan.price * billingMonths)} <small>/ {billingPeriod === "monthly" ? "month" : billingPeriod === "six-months" ? "6 months" : "year"}</small></p>
+                    <button type="button" className="plan-subscribe" onClick={() => { setPlanAmount(plan.price * billingMonths); document.getElementById("make-payment")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
+                      Continue to checkout
+                    </button>
+                  </article>
+                ))}
+              </div>
+            </section>
+
             <section className="payment-section" id="make-payment" aria-label="Make a payment">
-              <PaymentForm onInitiated={() => { loadTransactions(); loadStats(); }} />
+              <PaymentForm presetAmount={planAmount} onInitiated={() => { loadTransactions(); loadStats(); }} />
             </section>
           </div>
 

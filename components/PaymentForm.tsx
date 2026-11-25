@@ -1,17 +1,21 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import { initializePayment, ApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 
-export default function PaymentForm({ onInitiated }: { onInitiated: () => void }) {
+export default function PaymentForm({ onInitiated, presetAmount }: { onInitiated: () => void; presetAmount?: number | null }) {
   const { token, user } = useAuth();
   const { showToast } = useToast();
   const [amount, setAmount] = useState("");
   const [email, setEmail] = useState(user?.email || "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (presetAmount !== undefined && presetAmount !== null) setAmount(presetAmount.toFixed(2));
+  }, [presetAmount]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
