@@ -327,7 +327,8 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
   .dashboard-brand-copy > span { font-size: 18px; }
   .dashboard-brand-copy small { display: none; }
   .dashboard-user { gap: 11px; }
-  .dashboard-user-copy, .dashboard-signout, .dashboard-admin-link { display: none; }
+  .dashboard-user-copy, .dashboard-admin-link { display: none; }
+  .dashboard-signout { min-width: 64px; min-height: 42px; display: inline-flex; align-items: center; justify-content: center; padding: 0 10px; border: 1px solid rgba(222,234,239,.12); border-radius: 999px; background: rgba(255,255,255,.035); color: #d4ded9; font-size: 11px; font-weight: 700; }
   .profile-avatar { width: 37px; height: 37px; flex-basis: 37px; }
   .dashboard-welcome { display: grid; align-items: start; gap: 14px; padding: 24px 0 18px; }
   .dashboard-eyebrow { margin-bottom: 5px; font-size: 9px; }
