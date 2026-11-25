@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { getMyTransactions, getMyStats, Payment, Stats } from "@/lib/api";
+import { getMyTransactions, getMyStats, getMySubscriptions, initializeSubscription, cancelSubscription, LedgerSubscription, Payment, Stats } from "@/lib/api";
 import AuthForm from "@/components/AuthForm";
 import PaymentForm from "@/components/PaymentForm";
 import TransactionList from "@/components/TransactionList";
@@ -48,7 +48,9 @@ export default function Home() {
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "six-months" | "yearly">("monthly");
-  const [planAmount, setPlanAmount] = useState<number | null>(null);
+  const [subscriptions, setSubscriptions] = useState<LedgerSubscription[]>([]);
+  const [subscriptionBusy, setSubscriptionBusy] = useState(false);
+  const [subscriptionMessage, setSubscriptionMessage] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [txLoading, setTxLoading] = useState(true);
@@ -72,8 +74,42 @@ export default function Home() {
       .finally(() => setStatsLoading(false));
   }, [token]);
 
+  const loadSubscriptions = useCallback(() => {
+    if (!token) return;
+    getMySubscriptions(token).then((result) => setSubscriptions(result.subscriptions));
+  }, [token]);
+
   useEffect(() => loadTransactions(), [loadTransactions]);
   useEffect(() => loadStats(), [loadStats]);
+  useEffect(() => loadSubscriptions(), [loadSubscriptions]);
+
+  async function beginSubscription(tier: LedgerSubscription["tier"]) {
+    if (!token || subscriptionBusy) return;
+    setSubscriptionBusy(true);
+    setSubscriptionMessage(null);
+    try {
+      const result = await initializeSubscription(token, tier, billingPeriod);
+      window.location.href = result.authorization_url;
+    } catch (error) {
+      setSubscriptionMessage(error instanceof Error ? error.message : "Unable to start subscription checkout.");
+      setSubscriptionBusy(false);
+    }
+  }
+
+  async function stopSubscription(id: string) {
+    if (!token || subscriptionBusy) return;
+    setSubscriptionBusy(true);
+    setSubscriptionMessage(null);
+    try {
+      const result = await cancelSubscription(token, id);
+      setSubscriptionMessage(result.message);
+      loadSubscriptions();
+    } catch (error) {
+      setSubscriptionMessage(error instanceof Error ? error.message : "Unable to cancel renewal.");
+    } finally {
+      setSubscriptionBusy(false);
+    }
+  }
 
   const filteredPayments = useMemo(() => {
     const needle = search.trim().toLowerCase();
@@ -114,11 +150,11 @@ export default function Home() {
   const firstName = user.name.trim().split(/\s+/)[0] || "there";
   const totalPaid = stats?.totalPaid ?? 0;
   const transactionCount = stats?.totalTransactions ?? 0;
-  const billingMonths = billingPeriod === "monthly" ? 1 : billingPeriod === "six-months" ? 6 : 12;
+  const priceKey = billingPeriod === "monthly" ? "monthly" : billingPeriod === "six-months" ? "sixMonth" : "yearly";
   const plans = [
-    { name: "Promotion", price: 30, description: "A simple start for your account." },
-    { name: "Gold", price: 70, description: "More room for regular payments." },
-    { name: "Diamond", price: 150, description: "The complete Ledger experience." },
+    { name: "Promotion", tier: "promotion" as const, prices: { monthly: 30, sixMonth: 150, yearly: 280 }, description: "A simple start for your account." },
+    { name: "Gold", tier: "gold" as const, prices: { monthly: 70, sixMonth: 380, yearly: 700 }, description: "More room for regular payments." },
+    { name: "Diamond", tier: "diamond" as const, prices: { monthly: 150, sixMonth: 800, yearly: 1500 }, description: "The complete Ledger experience." },
   ];
 
   return (
@@ -249,15 +285,22 @@ export default function Home() {
                   </select>
                 </label>
               </div>
-              <p className="plans-note">Choose a tier and billing period. Checkout is processed securely through Paystack.</p>
+              <p className="plans-note">Your card is charged automatically at the displayed price each period. Turn off renewal anytime. Checkout is secured by Paystack.</p>
+              {subscriptions.filter((item) => ["active", "attention", "non-renewing"].includes(item.status)).map((subscription) => (
+                <div className="subscription-current" key={subscription._id}>
+                  <span><strong>{subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)}</strong> · {subscription.status === "non-renewing" ? "Ends after this period" : subscription.status === "attention" ? "Payment needs attention" : "Active"}<small>{subscription.nextPaymentDate ? `${subscription.isRecurring && subscription.status !== "non-renewing" ? "Next billing date" : "Plan ends"}: ${new Date(subscription.nextPaymentDate).toLocaleDateString()}` : subscription.isRecurring ? "Renewal schedule managed securely by Paystack" : "Fixed-term plan"}</small></span>
+                  {subscription.isRecurring && subscription.canCancel && subscription.status !== "non-renewing" && <button type="button" disabled={subscriptionBusy} onClick={() => stopSubscription(subscription._id)}>Turn off renewal</button>}
+                </div>
+              ))}
+              {subscriptionMessage && <p className="subscription-message" role="status">{subscriptionMessage}</p>}
               <div className="plan-cards">
                 {plans.map((plan) => (
-                  <article className="plan-card" key={plan.name}>
+                  <article className={`plan-card${subscriptions.some((item) => ["active", "attention", "non-renewing"].includes(item.status)) ? " plan-card--disabled" : ""}`} key={plan.name}>
                     <span className="plan-card-name">{plan.name}</span>
                     <p className="plan-card-description">{plan.description}</p>
-                    <p className="plan-price"><span>GHS</span> {formatMoney(plan.price * billingMonths)} <small>/ {billingPeriod === "monthly" ? "month" : billingPeriod === "six-months" ? "6 months" : "year"}</small></p>
-                    <button type="button" className="plan-subscribe" onClick={() => { setPlanAmount(plan.price * billingMonths); document.getElementById("make-payment")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
-                      Continue to checkout
+                    <p className="plan-price"><span>GHS</span> {formatMoney(plan.prices[priceKey])} <small>/ {billingPeriod === "monthly" ? "month" : billingPeriod === "six-months" ? "6 months" : "year"}</small></p>
+                    <button type="button" className="plan-subscribe" disabled={subscriptionBusy || subscriptions.some((item) => ["active", "attention", "non-renewing"].includes(item.status))} onClick={() => beginSubscription(plan.tier)}>
+                      {subscriptionBusy ? "Opening checkout…" : "Subscribe"}
                     </button>
                   </article>
                 ))}
@@ -265,7 +308,7 @@ export default function Home() {
             </section>
 
             <section className="payment-section" id="make-payment" aria-label="Make a payment">
-              <PaymentForm presetAmount={planAmount} onInitiated={() => { loadTransactions(); loadStats(); }} />
+              <PaymentForm onInitiated={() => { loadTransactions(); loadStats(); }} />
             </section>
           </div>
 
@@ -328,4 +371,3 @@ export default function Home() {
     </main>
   );
 }
-
