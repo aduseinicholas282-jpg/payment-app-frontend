@@ -140,6 +140,32 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .dashboard-main-column, .dashboard-side-column { min-width: 0; display: grid; gap: 18px; }
 .account-card { min-height: 286px; overflow: hidden; position: relative; padding: 23px 25px 18px; border: 1px solid rgba(147,200,178,.15); border-radius: 22px; background: radial-gradient(ellipse at 100% 0%, rgba(65,144,111,.16), transparent 43%), linear-gradient(145deg, #171f20, #101517 78%); box-shadow: 0 21px 48px -35px rgba(0,0,0,.9); }
 .account-card::after { content: ""; width: 240px; height: 240px; position: absolute; top: 54px; right: -150px; border: 1px solid rgba(167,226,192,.05); border-radius: 50%; box-shadow: 0 0 0 23px rgba(167,226,192,.018), 0 0 0 48px rgba(167,226,192,.014); pointer-events: none; }
+.account-card-balance { max-width: calc(100% - 190px); }
+.ledger-3d-stage { position: absolute; z-index: 1; top: 72px; right: 27px; width: 184px; height: 132px; perspective: 720px; pointer-events: none; }
+.ledger-3d-stage::after { content: ""; position: absolute; right: 9%; bottom: 3px; left: 8%; height: 21px; border-radius: 50%; background: rgba(0,0,0,.58); filter: blur(12px); transform: rotate(-6deg); animation: ledger-card-shadow 5.8s ease-in-out infinite; }
+.ledger-3d-card { position: absolute; inset: 8px 10px; overflow: hidden; padding: 12px; border: 1px solid rgba(194,226,209,.24); border-radius: 16px; background: linear-gradient(137deg, #263d37 0%, #1a2b2c 46%, #10191e 100%); box-shadow: inset 0 1px rgba(255,255,255,.12), 0 15px 24px -13px rgba(0,0,0,.82), 0 3px 0 rgba(101,137,126,.24); transform: rotateX(12deg) rotateY(-18deg) rotateZ(-6deg); transform-style: preserve-3d; animation: ledger-card-float 5.8s ease-in-out infinite; }
+.ledger-3d-card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(116deg, rgba(255,255,255,.12), transparent 34% 70%, rgba(84,211,161,.06)); pointer-events: none; }
+.ledger-3d-card::after { content: ""; position: absolute; top: 8px; right: -5px; width: 5px; height: calc(100% - 16px); border-radius: 0 5px 5px 0; background: linear-gradient(180deg, #41554e, #182629); transform: translateZ(-4px) rotateY(90deg); transform-origin: left center; }
+.ledger-3d-card-top { position: relative; z-index: 1; display: flex; align-items: center; gap: 7px; transform: translateZ(13px); }
+.ledger-3d-card-top .ledger-mark--small { width: 22px; height: 22px; border-radius: 7px; background: rgba(69,223,165,.1); }
+.ledger-3d-card-top .ledger-mark--small svg { width: 14px; height: 14px; }
+.ledger-3d-brand { color: #eef7f1; font-size: 9px; font-weight: 850; letter-spacing: .12em; }
+.ledger-3d-signal { display: flex; align-items: end; gap: 2px; height: 12px; margin-left: auto; opacity: .68; }
+.ledger-3d-signal i { width: 3px; border-radius: 3px; background: #b1d7c2; }
+.ledger-3d-signal i:nth-child(1) { height: 5px; }
+.ledger-3d-signal i:nth-child(2) { height: 8px; }
+.ledger-3d-signal i:nth-child(3) { height: 11px; }
+.ledger-3d-chip { position: relative; z-index: 1; width: 27px; height: 20px; margin-top: 11px; overflow: hidden; border: 1px solid rgba(227,224,190,.5); border-radius: 5px; background: linear-gradient(135deg, #b0bd9c, #758477 65%, #53665b); box-shadow: inset 0 1px 1px rgba(255,255,255,.35); transform: translateZ(18px); }
+.ledger-3d-chip::before, .ledger-3d-chip::after { content: ""; position: absolute; background: rgba(38,54,47,.38); }
+.ledger-3d-chip::before { top: 0; bottom: 0; left: 33%; width: 1px; box-shadow: 8px 0 rgba(38,54,47,.32); }
+.ledger-3d-chip::after { top: 50%; right: 0; left: 0; height: 1px; }
+.ledger-3d-chip i { position: absolute; z-index: 1; top: 0; bottom: 0; left: 50%; width: 1px; background: rgba(238,231,192,.28); }
+.ledger-3d-lines { position: relative; z-index: 1; display: flex; gap: 4px; margin-top: 8px; transform: translateZ(10px); }
+.ledger-3d-lines i { width: 17px; height: 3px; border-radius: 3px; background: rgba(220,237,226,.26); }
+.ledger-3d-lines i:first-child { width: 27px; background: rgba(69,223,165,.72); }
+.ledger-3d-caption { position: absolute; right: 12px; bottom: 11px; z-index: 1; color: rgba(214,231,221,.55); font-size: 6px; font-weight: 800; letter-spacing: .16em; transform: translateZ(8px); }
+@keyframes ledger-card-float { 0%, 100% { transform: translate3d(0, 0, 0) rotateX(12deg) rotateY(-18deg) rotateZ(-6deg); } 50% { transform: translate3d(0, -7px, 9px) rotateX(9deg) rotateY(-13deg) rotateZ(-4deg); } }
+@keyframes ledger-card-shadow { 0%, 100% { opacity: .9; transform: scaleX(1) rotate(-6deg); } 50% { opacity: .62; transform: scaleX(.83) rotate(-6deg); } }
 .account-card-topline, .account-card-brand { display: flex; align-items: center; }
 .account-card-topline { justify-content: space-between; }
 .account-card-brand { gap: 9px; color: #b7c5bf; font-size: 10px; font-weight: 800; letter-spacing: .11em; }
@@ -276,6 +302,13 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
   .dashboard-side-column { grid-template-columns: minmax(0, 1.5fr) minmax(220px, .8fr); align-items: start; }
   .activity-panel { grid-row: span 2; }
 }
+@media (min-width: 641px) and (max-width: 1100px) {
+  .account-card-balance { max-width: calc(100% - 154px); }
+  .ledger-3d-stage { top: 79px; right: 17px; width: 148px; height: 108px; }
+  .ledger-3d-card { inset: 7px 8px; padding: 10px; border-radius: 14px; }
+  .ledger-3d-chip { margin-top: 8px; }
+  .ledger-3d-lines { margin-top: 6px; }
+}
 @media (max-width: 640px) {
   body { font-size: 14px; background: #080a0d; }
   .glass-card { border-radius: 17px; }
@@ -307,8 +340,20 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
   .dashboard-side-column { display: grid; grid-template-columns: minmax(0, 1fr); }
   .activity-panel { grid-row: auto; }
   .account-card { min-height: 270px; padding: 19px 18px 16px; border-radius: 20px; }
-  .account-card-balance { margin-top: 27px; }
+  .account-card-balance { max-width: 100%; margin-top: 27px; }
   .account-card-amount { font-size: clamp(31px, 9vw, 38px); }
+  .ledger-3d-stage { position: relative; top: auto; right: auto; width: 108px; height: 75px; margin: 11px 0 -3px auto; perspective: 560px; }
+  .ledger-3d-stage::after { bottom: 2px; height: 14px; }
+  .ledger-3d-card { inset: 5px 8px; padding: 8px; border-radius: 12px; }
+  .ledger-3d-card-top { gap: 5px; }
+  .ledger-3d-card-top .ledger-mark--small { width: 18px; height: 18px; border-radius: 6px; }
+  .ledger-3d-card-top .ledger-mark--small svg { width: 12px; height: 12px; }
+  .ledger-3d-brand { font-size: 7px; }
+  .ledger-3d-chip { width: 22px; height: 16px; margin-top: 6px; border-radius: 4px; }
+  .ledger-3d-lines { gap: 3px; margin-top: 5px; }
+  .ledger-3d-lines i { width: 12px; height: 2px; }
+  .ledger-3d-lines i:first-child { width: 18px; }
+  .ledger-3d-caption { right: 8px; bottom: 7px; font-size: 5px; }
   .account-card-actions { gap: 8px; margin-top: 21px; }
   .account-action { min-height: 46px; padding: 0 13px; font-size: 11px; }
   .account-card-footer { margin-top: 18px; }
