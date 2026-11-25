@@ -40,23 +40,26 @@ export default function TransactionDetailModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-4"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/65 px-0 py-0 backdrop-blur-sm sm:items-center sm:px-4 sm:py-4"
       onClick={onClose}
     >
       <div
-        className="glass-card rounded-2xl p-6 w-full max-w-sm"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Transaction details"
+        className="glass-card w-full rounded-t-[24px] p-5 sm:max-w-sm sm:rounded-[22px] sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="font-display text-lg font-semibold text-ink">
+            <p className="font-display text-[21px] font-bold tracking-tight text-ink">
               {payment.currency || "GHS"} {payment.amount.toFixed(2)}
             </p>
             <p className={`text-xs font-medium ${s.text}`}>{s.label}</p>
           </div>
           <button
             onClick={onClose}
-            className="text-ink-soft hover:text-ink transition-colors text-lg leading-none"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-surface-line text-ink-soft transition-colors hover:bg-white/5 hover:text-ink"
             aria-label="Close"
           >
             ✕
@@ -78,3 +81,4 @@ export default function TransactionDetailModal({
     </div>
   );
 }
+

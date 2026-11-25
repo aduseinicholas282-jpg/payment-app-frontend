@@ -70,13 +70,13 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-12">
-      <header className="flex flex-wrap items-start justify-between gap-y-3 mb-8">
+    <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-7 sm:px-6 sm:py-12">
+      <header className="flex flex-wrap items-start justify-between gap-3 mb-7 sm:mb-8">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-ink">
+          <h1 className="font-display text-[25px] font-bold tracking-[-0.04em] text-ink sm:text-[28px]">
             All transactions
           </h1>
-          <p className="text-ink-soft text-sm mt-1">{total} total entries</p>
+          <p className="text-ink-soft text-[13px] mt-1">{total} total entries</p>
         </div>
         <Link href="/" className="text-sm text-ink-soft hover:text-teal transition-colors mt-1">
           Back to ledger
@@ -102,7 +102,7 @@ export default function AdminPage() {
             setPage(1);
           }}
           placeholder="Filter by email…"
-          className="rounded-lg bg-bg-elevated border border-surface-line px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-violet"
+          className="min-w-0 flex-1 px-4 py-2.5 text-[14px] sm:flex-initial"
         />
       </div>
 
@@ -139,3 +139,4 @@ export default function AdminPage() {
     </main>
   );
 }
+

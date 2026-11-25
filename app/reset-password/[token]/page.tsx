@@ -50,37 +50,39 @@ export default function ResetPasswordPage() {
     <main className="flex-1 flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-sm mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="font-display text-3xl font-semibold text-ink">
+          <h1 className="font-display text-[27px] font-bold tracking-[-0.04em] text-ink sm:text-[30px]">
             Set a new password
           </h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="glass-card space-y-5 p-5 sm:p-7">
           <div>
-            <label className="block text-xs font-medium text-ink-soft mb-1">
+            <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
               New password
             </label>
             <input
               required
               type="password"
+              autoComplete="new-password"
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+              className="w-full px-4 py-3 text-[15px]"
               placeholder="At least 8 characters"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-ink-soft mb-1">
+            <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
               Confirm password
             </label>
             <input
               required
               type="password"
+              autoComplete="new-password"
               minLength={8}
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+              className="w-full px-4 py-3 text-[15px]"
             />
           </div>
 
@@ -94,7 +96,7 @@ export default function ResetPasswordPage() {
             type="submit"
             disabled={busy}
             style={{ "--btn-color": "var(--teal)", "--btn-glow": "var(--teal-glow)" } as React.CSSProperties}
-            className="glow-btn w-full text-bg rounded-lg py-2.5 text-sm font-semibold disabled:opacity-60"
+            className="glow-btn min-h-12 w-full rounded-xl py-3 text-[15px] text-bg disabled:opacity-60"
           >
             {busy ? "Updating…" : "Update password"}
           </button>
@@ -107,3 +109,4 @@ export default function ResetPasswordPage() {
     </main>
   );
 }
+

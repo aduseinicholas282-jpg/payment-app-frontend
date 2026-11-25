@@ -29,11 +29,13 @@ export default function ForgotPasswordPage() {
   return (
     <main className="flex-1 flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-sm mx-auto">
-        <div className="mb-8 text-center">
-          <h1 className="font-display text-3xl font-semibold text-ink">
+        <div className="mb-7 text-center">
+          <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-teal/25 bg-teal/10 text-teal" aria-hidden="true">↗</div>
+          <p className="font-display text-[23px] font-extrabold tracking-[-0.05em] text-ink">Ledger</p>
+          <h1 className="mt-5 font-display text-[27px] font-bold tracking-[-0.04em] text-ink sm:text-[30px]">
             Reset your password
           </h1>
-          <p className="text-ink-soft mt-2 text-sm">
+          <p className="text-ink-soft mt-2 text-[14px]">
             We&apos;ll send you a link to set a new one.
           </p>
         </div>
@@ -57,17 +59,18 @@ export default function ForgotPasswordPage() {
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="glass-card space-y-5 p-5 sm:p-7">
             <div>
-              <label className="block text-xs font-medium text-ink-soft mb-1">
+              <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
                 Email
               </label>
               <input
                 required
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+                className="w-full px-4 py-3 text-[15px]"
                 placeholder="you@example.com"
               />
             </div>
@@ -82,7 +85,7 @@ export default function ForgotPasswordPage() {
               type="submit"
               disabled={busy}
               style={{ "--btn-color": "var(--teal)", "--btn-glow": "var(--teal-glow)" } as React.CSSProperties}
-              className="glow-btn w-full text-bg rounded-lg py-2.5 text-sm font-semibold disabled:opacity-60"
+              className="glow-btn min-h-12 w-full rounded-xl py-3 text-[15px] text-bg disabled:opacity-60"
             >
               {busy ? "Sending…" : "Send reset link"}
             </button>
@@ -96,3 +99,4 @@ export default function ForgotPasswordPage() {
     </main>
   );
 }
+

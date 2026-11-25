@@ -81,8 +81,9 @@ export default function AdminTransactionTable({
 
   if (payments.length === 0) {
     return (
-      <div className="glass-card rounded-2xl p-8 text-center">
-        <p className="text-ink-soft text-sm">No transactions match this filter.</p>
+      <div className="glass-card p-8 text-center">
+        <p className="font-display text-[15px] font-semibold text-ink">No matching transactions</p>
+        <p className="mt-1 text-[13px] text-ink-soft">Try changing the status or email filter.</p>
       </div>
     );
   }
@@ -102,7 +103,7 @@ export default function AdminTransactionTable({
           return (
             <div
               key={p._id}
-              className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white/[0.03] transition-colors"
+              className="flex min-h-[72px] items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/[0.03] sm:gap-4 sm:px-5"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <span
@@ -111,15 +112,15 @@ export default function AdminTransactionTable({
                   aria-hidden
                 />
                 <div className="min-w-0">
-                  <p className="text-sm text-ink truncate">{owner}</p>
-                  <p className="font-mono text-xs uppercase text-ink-soft/70 truncate">
+                  <p className="truncate text-[13px] font-semibold text-ink sm:text-[14px]">{owner}</p>
+                  <p className="truncate text-[11px] text-ink-soft sm:text-[12px]">
                     {p.reference} · {formatDate(p.createdAt)}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-4 shrink-0">
                 <div className="text-right">
-                  <p className="font-mono text-sm font-medium text-ink">
+                  <p className="font-mono text-[13px] font-semibold tabular-nums text-ink sm:text-[14px]">
                     {p.currency || "GHS"} {p.amount.toFixed(2)}
                   </p>
                   <p className={`text-xs font-medium ${s.text}`}>{s.label}</p>
@@ -128,7 +129,7 @@ export default function AdminTransactionTable({
                   <button
                     onClick={() => handleRefund(p.reference)}
                     disabled={busyRef === p.reference}
-                    className="text-xs font-medium text-error border border-error/30 rounded-lg px-2.5 py-1.5 hover:bg-error/10 hover:shadow-[0_0_16px_-4px_var(--error-glow)] transition-all disabled:opacity-50 whitespace-nowrap"
+                    className="min-h-10 rounded-xl border border-error/30 px-3 py-2 text-[12px] font-semibold text-error transition-colors hover:bg-error/10 disabled:opacity-50 whitespace-nowrap"
                   >
                     {busyRef === p.reference ? "Refunding…" : "Refund"}
                   </button>
@@ -141,3 +142,4 @@ export default function AdminTransactionTable({
     </div>
   );
 }
+

@@ -57,45 +57,46 @@ export default function Home() {
 
   if (!user || !token) {
     return (
-      <main className="flex-1 flex items-center justify-center px-4 py-16">
+      <main className="flex-1 flex items-center justify-center px-4 py-10 sm:py-16">
         <AuthForm />
       </main>
     );
   }
 
   return (
-    <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-12">
-      <header className="flex flex-wrap items-start justify-between gap-y-3 mb-10">
+    <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-7 sm:px-6 sm:py-12">
+      <header className="flex flex-wrap items-center justify-between gap-4 mb-8 sm:mb-10">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-ink">
+          <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.16em] text-teal">Your account</p>
+          <h1 className="font-display text-[25px] font-bold tracking-[-0.04em] text-ink sm:text-[29px]">
             Welcome, {user.name.split(" ")[0]}
           </h1>
         </div>
-        <div className="flex items-center gap-4 mt-1">
+        <nav aria-label="Account navigation" className="flex items-center gap-3 rounded-xl border border-surface-line bg-surface/75 p-1.5 sm:gap-4">
           {user.role === "admin" && (
             <Link
               href="/admin"
-              className="text-sm text-teal font-medium hover:underline"
+              className="rounded-lg px-2 py-1.5 text-[13px] font-semibold text-teal hover:bg-white/5"
             >
               Admin
             </Link>
           )}
           <Link
             href="/settings"
-            className="text-sm text-ink-soft hover:text-teal transition-colors"
+            className="rounded-lg px-2 py-1.5 text-[13px] font-medium text-ink-soft transition-colors hover:text-ink"
           >
             Settings
           </Link>
           <button
             onClick={signOut}
-            className="text-sm text-ink-soft hover:text-teal transition-colors"
+            className="rounded-lg px-2 py-1.5 text-[13px] font-medium text-ink-soft transition-colors hover:text-ink"
           >
             Sign out
           </button>
-        </div>
+        </nav>
       </header>
 
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <StatsGrid stats={stats} loading={statsLoading} />
 
         <PaymentForm
@@ -106,8 +107,8 @@ export default function Home() {
         />
 
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-ink-soft text-sm font-medium">History</p>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div><h2 className="font-display text-[17px] font-bold tracking-tight text-ink">Recent activity</h2><p className="text-[13px] text-ink-soft">Your latest payment records</p></div>
             <StatusFilter
               value={status}
               onChange={(v) => {
@@ -144,3 +145,4 @@ export default function Home() {
     </main>
   );
 }
+
