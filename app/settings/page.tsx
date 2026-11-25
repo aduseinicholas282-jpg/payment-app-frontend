@@ -100,9 +100,9 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="flex-1 max-w-lg w-full mx-auto px-4 py-12 space-y-6">
+    <main className="flex-1 max-w-lg w-full mx-auto px-4 py-7 sm:px-6 sm:py-12 space-y-5 sm:space-y-6">
       <header className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-semibold text-ink">Settings</h1>
+        <h1 className="font-display text-[25px] font-bold tracking-[-0.04em] text-ink sm:text-[28px]">Settings</h1>
         <Link href="/" className="text-sm text-ink-soft hover:text-teal transition-colors">
           Back to ledger
         </Link>
@@ -110,34 +110,36 @@ export default function SettingsPage() {
 
       <form
         onSubmit={handleProfileSubmit}
-        className="glass-card rounded-2xl p-6 space-y-4"
+        className="glass-card p-5 space-y-5 sm:p-6"
         style={{ "--card-glow": "var(--teal-glow)" } as React.CSSProperties}
       >
-        <h2 className="font-display text-lg font-semibold text-ink">Profile</h2>
+        <h2 className="font-display text-[18px] font-bold tracking-tight text-ink">Profile</h2>
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">Full name</label>
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">Full name</label>
           <input
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+            autoComplete="name"
+            className="w-full px-4 py-3 text-[15px]"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">Email</label>
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">Email</label>
           <input
             required
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+            autoComplete="email"
+            className="w-full px-4 py-3 text-[15px]"
           />
         </div>
         <button
           type="submit"
           disabled={profileBusy}
           style={{ "--btn-color": "var(--teal)", "--btn-glow": "var(--teal-glow)" } as React.CSSProperties}
-          className="glow-btn rounded-lg px-4 py-2 text-sm font-semibold text-bg disabled:opacity-60"
+          className="glow-btn min-h-11 rounded-xl px-5 py-2.5 text-sm font-semibold text-bg disabled:opacity-60"
         >
           {profileBusy ? "Saving…" : "Save profile"}
         </button>
@@ -145,57 +147,60 @@ export default function SettingsPage() {
 
       <form
         onSubmit={handlePasswordSubmit}
-        className="glass-card rounded-2xl p-6 space-y-4"
+        className="glass-card p-5 space-y-5 sm:p-6"
         style={{ "--card-glow": "var(--violet-glow)" } as React.CSSProperties}
       >
-        <h2 className="font-display text-lg font-semibold text-ink">Change password</h2>
+        <h2 className="font-display text-[18px] font-bold tracking-tight text-ink">Change password</h2>
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">Current password</label>
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">Current password</label>
           <input
             required
             type="password"
+            autoComplete="current-password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet"
+            className="w-full px-4 py-3 text-[15px]"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">New password</label>
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">New password</label>
           <input
             required
             type="password"
+            autoComplete="new-password"
             minLength={8}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet"
+            className="w-full px-4 py-3 text-[15px]"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">Confirm new password</label>
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">Confirm new password</label>
           <input
             required
             type="password"
+            autoComplete="new-password"
             minLength={8}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet"
+            className="w-full px-4 py-3 text-[15px]"
           />
         </div>
         <button
           type="submit"
           disabled={passwordBusy}
           style={{ "--btn-color": "var(--violet)", "--btn-glow": "var(--violet-glow)" } as React.CSSProperties}
-          className="glow-btn rounded-lg px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          className="glow-btn min-h-11 rounded-xl px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-60"
         >
           {passwordBusy ? "Saving…" : "Change password"}
         </button>
       </form>
 
       <div
-        className="glass-card rounded-2xl p-6 space-y-3 border-error/30"
+        className="glass-card space-y-3 border-error/30 p-5 sm:p-6"
         style={{ "--card-glow": "var(--error-glow)" } as React.CSSProperties}
       >
-        <h2 className="font-display text-lg font-semibold text-error">Danger zone</h2>
+        <h2 className="font-display text-[18px] font-bold tracking-tight text-error">Danger zone</h2>
         <p className="text-sm text-ink-soft">
           Deleting your account is permanent. Your past transactions are kept
           for records, but you&apos;ll lose access to your account entirely.
@@ -203,7 +208,7 @@ export default function SettingsPage() {
         {!confirmDelete ? (
           <button
             onClick={() => setConfirmDelete(true)}
-            className="text-sm font-medium text-error border border-error/30 rounded-lg px-4 py-2 hover:bg-error/10 transition-colors"
+            className="min-h-11 rounded-xl border border-error/30 px-4 py-2 text-sm font-semibold text-error transition-colors hover:bg-error/10"
           >
             Delete my account
           </button>
@@ -228,3 +233,4 @@ export default function SettingsPage() {
     </main>
   );
 }
+
