@@ -153,6 +153,38 @@ export interface Stats {
   totalUsers?: number;
 }
 
+export interface LedgerSubscription {
+  _id: string;
+  tier: "promotion" | "gold" | "diamond";
+  billingPeriod: "monthly" | "six-months" | "yearly";
+  amount: number;
+  currency: string;
+  status: "active" | "attention" | "non-renewing" | "cancelled" | "completed" | "pending";
+  nextPaymentDate?: string;
+  isRecurring?: boolean;
+  canCancel?: boolean;
+}
+
+export function getMySubscriptions(token: string) {
+  return request<{ subscriptions: LedgerSubscription[] }>("/api/subscriptions/mine", {}, token);
+}
+
+export function initializeSubscription(token: string, tier: LedgerSubscription["tier"], billingPeriod: LedgerSubscription["billingPeriod"]) {
+  return request<{ authorization_url: string; reference: string; amount: number; currency: string }>(
+    "/api/subscriptions/checkout",
+    { method: "POST", body: JSON.stringify({ tier, billingPeriod }) },
+    token
+  );
+}
+
+export function cancelSubscription(token: string, id: string) {
+  return request<{ message: string; subscription: { id: string; status: LedgerSubscription["status"]; nextPaymentDate?: string } }>(
+    `/api/subscriptions/${id}/cancel`,
+    { method: "POST" },
+    token
+  );
+}
+
 export function getMyStats(token: string) {
   return request<Stats>("/api/payments/stats", {}, token);
 }
