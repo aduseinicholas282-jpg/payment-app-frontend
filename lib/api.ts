@@ -91,10 +91,11 @@ export function initializePayment(
   );
 }
 
-export function getMyTransactions(token: string, status?: string, page = 1) {
+export function getMyTransactions(token: string, status?: string, page = 1, search = "") {
   const params = new URLSearchParams();
   if (status && status !== "all") params.set("status", status);
   if (page) params.set("page", String(page));
+  if (search.trim()) params.set("search", search.trim());
   const query = params.toString() ? `?${params.toString()}` : "";
   return request<PaginatedPayments>(
     `/api/payments/my-transactions${query}`,

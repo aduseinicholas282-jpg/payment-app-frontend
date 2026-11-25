@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getMyTransactions, getMyStats, getMySubscriptions, initializeSubscription, cancelSubscription, LedgerSubscription, Payment, Stats } from "@/lib/api";
@@ -54,17 +54,22 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [txLoading, setTxLoading] = useState(true);
+  const transactionRequestId = useRef(0);
 
   const loadTransactions = useCallback(() => {
     if (!token) return;
+    const requestId = ++transactionRequestId.current;
     setTxLoading(true);
-    getMyTransactions(token, status, page)
+    getMyTransactions(token, status, page, search)
       .then((res) => {
+        if (requestId !== transactionRequestId.current) return;
         setPayments(res.payments);
         setPages(res.pages);
       })
-      .finally(() => setTxLoading(false));
-  }, [token, status, page]);
+      .finally(() => {
+        if (requestId === transactionRequestId.current) setTxLoading(false);
+      });
+  }, [token, status, page, search]);
 
   const loadStats = useCallback(() => {
     if (!token) return;
@@ -79,7 +84,10 @@ export default function Home() {
     getMySubscriptions(token).then((result) => setSubscriptions(result.subscriptions));
   }, [token]);
 
-  useEffect(() => loadTransactions(), [loadTransactions]);
+  useEffect(() => {
+    const timeout = window.setTimeout(loadTransactions, search.trim() ? 250 : 0);
+    return () => window.clearTimeout(timeout);
+  }, [loadTransactions, search]);
   useEffect(() => loadStats(), [loadStats]);
   useEffect(() => loadSubscriptions(), [loadSubscriptions]);
 
@@ -110,25 +118,6 @@ export default function Home() {
       setSubscriptionBusy(false);
     }
   }
-
-  const filteredPayments = useMemo(() => {
-    const needle = search.trim().toLowerCase();
-    if (!needle) return payments;
-
-    return payments.filter((payment) => {
-      const searchable = [
-        payment.reference,
-        payment.email,
-        payment.status,
-        payment.currency,
-        payment.amount.toFixed(2),
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return searchable.includes(needle);
-    });
-  }, [payments, search]);
 
   if (loading) {
     return (
@@ -201,9 +190,13 @@ export default function Home() {
             <input
               type="search"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search payments"
-              aria-label="Search payments on this page"
+              onChange={(event) => {
+                transactionRequestId.current += 1;
+                setSearch(event.target.value);
+                setPage(1);
+              }}
+              placeholder="Search all payments"
+              aria-label="Search all payments by reference, email, amount or status"
             />
             <span className="dashboard-search-shortcut" aria-hidden="true">⌕</span>
           </label>
@@ -339,7 +332,7 @@ export default function Home() {
               </div>
 
               <TransactionList
-                payments={filteredPayments}
+                payments={payments}
                 loading={txLoading}
                 emptyMessage={search.trim() ? "No payments match your search." : undefined}
               />
