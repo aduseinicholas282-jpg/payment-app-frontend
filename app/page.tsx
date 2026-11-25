@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getMyTransactions, getMyStats, getMySubscriptions, initializeSubscription, cancelSubscription, LedgerSubscription, Payment, Stats } from "@/lib/api";
 import AuthForm from "@/components/AuthForm";
+import LedgerPhoneShowcase from "@/components/LedgerPhoneShowcase";
 import PaymentForm from "@/components/PaymentForm";
 import TransactionList from "@/components/TransactionList";
 import StatusFilter from "@/components/StatusFilter";
@@ -130,8 +131,11 @@ export default function Home() {
 
   if (!user || !token) {
     return (
-      <main className="auth-page">
-        <AuthForm />
+      <main className="auth-page auth-page--showcase">
+        <div className="auth-layout">
+          <LedgerPhoneShowcase />
+          <AuthForm />
+        </div>
       </main>
     );
   }
