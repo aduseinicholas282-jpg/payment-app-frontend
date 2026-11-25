@@ -15,11 +15,11 @@ function StatCard({
 }) {
   return (
     <div
-      className="glass-card rounded-xl p-4"
+      className="glass-card min-w-0 rounded-2xl p-4 sm:p-5"
       style={{ "--card-glow": glow } as React.CSSProperties}
     >
-      <p className="text-xs text-ink-soft mb-1">{label}</p>
-      <p className={`font-display text-xl font-semibold ${accent}`}>{value}</p>
+      <p className="mb-2 text-[12px] font-medium tracking-[0.01em] text-ink-soft sm:text-[13px]">{label}</p>
+      <p className={`font-display text-[19px] font-bold leading-tight tracking-[-0.04em] tabular-nums sm:text-[22px] ${accent}`}>{value}</p>
     </div>
   );
 }
@@ -86,3 +86,4 @@ export default function StatsGrid({
     </div>
   );
 }
+
