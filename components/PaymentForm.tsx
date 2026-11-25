@@ -32,25 +32,27 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
   }
 
   return (
-    <div className="glass-card rounded-2xl p-6" style={{ "--card-glow": "var(--violet-glow)" } as React.CSSProperties}>
-      <h2 className="font-display text-xl font-semibold text-ink mb-4">
+    <div className="glass-card p-5 sm:p-6" style={{ "--card-glow": "var(--violet-glow)" } as React.CSSProperties}>
+      <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.15em] text-teal">Secure checkout</p>
+      <h2 className="font-display mb-5 text-[20px] font-bold tracking-[-0.03em] text-ink sm:text-[22px]">
         Make a payment
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
             Email for receipt
           </label>
           <input
             required
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet"
+            className="w-full px-4 py-3 text-[15px]"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-ink-soft mb-1">
+          <label className="mb-2 block text-[13px] font-semibold text-ink-soft">
             Amount (GHS)
           </label>
           <input
@@ -60,7 +62,7 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full rounded-lg bg-bg-elevated border border-surface-line px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-violet"
+            className="w-full px-4 py-3 font-mono text-[15px]"
             placeholder="0.00"
           />
         </div>
@@ -75,7 +77,7 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
           type="submit"
           disabled={busy}
           style={{ "--btn-color": "var(--violet)", "--btn-glow": "var(--violet-glow)" } as React.CSSProperties}
-          className="glow-btn w-full text-white rounded-lg py-2.5 text-sm font-semibold disabled:opacity-60"
+          className="glow-btn min-h-12 w-full rounded-xl py-3 text-[15px] text-white disabled:opacity-60"
         >
           {busy ? "Redirecting to Paystack…" : "Pay now"}
         </button>
@@ -83,3 +85,4 @@ export default function PaymentForm({ onInitiated }: { onInitiated: () => void }
     </div>
   );
 }
+
