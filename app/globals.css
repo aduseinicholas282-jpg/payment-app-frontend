@@ -155,6 +155,11 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .section-period { padding: 6px 9px; border: 1px solid var(--surface-line); border-radius: 9px; color: #aab5b0; font-size: 10px; font-weight: 650; }
 .metrics-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .metric-card { min-width: 0; min-height: 96px; padding: 13px; border: 1px solid rgba(222,234,239,.065); border-radius: 14px; background: rgba(255,255,255,.025); }
+.metric-card-top { display: flex; align-items: center; gap: 7px; }
+.metric-card-icon { width: 21px; height: 21px; display: grid; flex: 0 0 21px; place-items: center; border-radius: 7px; background: rgba(69,223,165,.09); color: var(--teal); font-size: 11px; font-weight: 800; }
+.metric-card-label { display: block; overflow: hidden; color: #a0aaa6; font-size: 11px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
+.metric-card-value { display: block; margin: 9px 0 0; overflow: hidden; color: #eff4f1; font-size: clamp(18px, 2vw, 23px); font-weight: 800; letter-spacing: -.04em; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.metric-card-note { display: block; margin: 3px 0 0; color: #82908a; font-size: 10px; }
 .metric-label { display: block; color: #a0aaa6; font-size: 11px; font-weight: 620; }
 .metric-value { display: block; margin-top: 9px; overflow: hidden; color: #eff4f1; font-size: clamp(18px, 2vw, 23px); font-weight: 800; letter-spacing: -.04em; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .metric-note { display: block; margin-top: 3px; color: #82908a; font-size: 10px; }
