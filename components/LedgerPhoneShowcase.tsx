@@ -3,7 +3,7 @@ export default function LedgerPhoneShowcase() {
     <section className="auth-showcase" aria-label="Ledger mobile app preview">
       <div className="auth-showcase-copy">
         <span className="auth-showcase-kicker">PAYMENTS, IN CLEAR VIEW</span>
-        <h2>Every payment.<br /><span>In its place.</span></h2>
+        <h2>Payments.<br /><span>In one place.</span></h2>
         <p>See your activity, keep your records clear, and make every payment with confidence.</p>
         <div className="auth-showcase-trust"><span aria-hidden="true">✓</span> Secure payments, simply managed</div>
       </div>
