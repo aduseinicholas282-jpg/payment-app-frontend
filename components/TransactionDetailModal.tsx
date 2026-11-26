@@ -55,8 +55,35 @@ export default function TransactionDetailModal({
   const amount = formatAmount(payment);
   const text = receiptText(payment, status.label);
 
+  async function copyReceiptDetails() {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("Clipboard API unavailable");
+      }
+    } catch {
+      const field = document.createElement("textarea");
+      field.value = text;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.left = "-9999px";
+      document.body.appendChild(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      if (!copied) throw new Error("Unable to copy receipt");
+    }
+    showToast("Receipt details copied. Paste them into a message to share.", "success");
+  }
+
   async function shareReceipt() {
-    if (navigator.share) {
+    const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+
+    // Windows desktop browsers may expose navigator.share even when their
+    // system share panel cannot load. Use copy there so the action always works.
+    if (isPhone && navigator.share) {
       try {
         await navigator.share({ title: "Ledger payment receipt", text });
         return;
@@ -66,10 +93,9 @@ export default function TransactionDetailModal({
     }
 
     try {
-      await navigator.clipboard.writeText(text);
-      showToast("Receipt details copied to your clipboard.", "success");
+      await copyReceiptDetails();
     } catch {
-      showToast("Sharing is unavailable on this device. You can save the receipt as a PDF.", "info");
+      showToast("Could not copy the receipt. You can still save it as a PDF.", "error");
     }
   }
 
