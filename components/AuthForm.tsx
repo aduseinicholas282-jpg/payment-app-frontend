@@ -54,6 +54,7 @@ export default function AuthForm() {
 
       <form
         onSubmit={handleSubmit}
+        data-mode={mode}
         className="auth-card"
       >
         <div className="auth-tabs" role="tablist" aria-label="Account access">
@@ -61,7 +62,7 @@ export default function AuthForm() {
           <button type="button" role="tab" aria-selected={mode === "signup"} onClick={() => { setMode("signup"); setError(null); }} className={`auth-tab ${mode === "signup" ? "auth-tab--active" : ""}`}>Register</button>
         </div>
         {mode === "signup" && (
-          <div className="auth-field">
+          <div className="auth-field auth-field--name">
             <label className="auth-label">
               Full name
             </label>
