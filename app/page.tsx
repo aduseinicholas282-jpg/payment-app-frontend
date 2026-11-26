@@ -161,7 +161,7 @@ export default function Home() {
           <nav className="dashboard-topnav" aria-label="Main navigation">
             <a className="dashboard-nav-link dashboard-nav-link--active" href="#home">Home</a>
             <a className="dashboard-nav-link" href="#overview">Overview</a>
-            <a className="dashboard-nav-link" href="#activity">Activity</a>
+            <a className="dashboard-nav-link" href="#activity">Receipts</a>
           </nav>
 
           <div className="dashboard-user">
@@ -238,7 +238,7 @@ export default function Home() {
                 </a>
                 <a className="account-action account-action--secondary" href="#activity">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.35-5.65L4 8.7" /><path d="M4 4v4.7h4.7M12 7v5l3 2" /></svg>
-                  View activity
+                  View receipts
                 </a>
               </div>
 
@@ -322,8 +322,9 @@ export default function Home() {
             <section className="activity-panel" id="activity" aria-labelledby="activity-heading">
               <div className="section-heading activity-heading">
                 <div>
-                  <p className="dashboard-eyebrow">YOUR LATEST PAYMENTS</p>
-                  <h2 id="activity-heading">Recent activity</h2>
+                  <p className="dashboard-eyebrow">YOUR PAYMENT RECORDS</p>
+                  <h2 id="activity-heading">Receipt vault</h2>
+                  <p className="receipt-vault-description">Open a payment to save or share its receipt.</p>
                 </div>
                 <StatusFilter
                   value={status}
@@ -367,7 +368,7 @@ export default function Home() {
         </a>
         <a className="mobile-nav-item" href="#activity">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4v16h15M8 15l3.5-4 3 2 4.5-6" /></svg>
-          <span>Activity</span>
+          <span>Receipts</span>
         </a>
         <Link className="mobile-nav-item" href="/settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>
