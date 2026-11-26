@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { login, register, ApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import { LedgerPhoneMockup } from "@/components/LedgerPhoneShowcase";
 
 type AuthMode = "signin" | "signup";
 
@@ -30,40 +31,13 @@ function AuthBrand() {
   );
 }
 
-function AuthArtwork() {
-  return (
-    <div className="auth-flip-art" aria-hidden="true">
-      <div className="auth-flip-art-orbit auth-flip-art-orbit--outer" />
-      <div className="auth-flip-art-orbit auth-flip-art-orbit--inner" />
-      <div className="auth-flip-preview-card">
-        <div className="auth-flip-preview-top">
-          <LedgerLogo />
-          <span>LEDGER ACCOUNT</span>
-          <i />
-        </div>
-        <small>SAMPLE PAYMENT ACTIVITY</small>
-        <strong>GHS 2,840.00</strong>
-        <span className="auth-flip-preview-caption">Across 8 recent payments</span>
-        <span className="auth-flip-preview-divider" />
-        <span className="auth-flip-preview-payment">
-          <i>✓</i>
-          <span><b>Payment recorded</b><small>Today · 10:24</small></span>
-          <em>GHS 120</em>
-        </span>
-      </div>
-      <span className="auth-flip-art-dot auth-flip-art-dot--one" />
-      <span className="auth-flip-art-dot auth-flip-art-dot--two" />
-    </div>
-  );
-}
-
 function WelcomePanel({ mode, onChangeMode }: { mode: AuthMode; onChangeMode: (mode: AuthMode) => void }) {
   const isSignIn = mode === "signin";
 
   return (
     <aside className="auth-flip-promo">
       <p className="auth-flip-promo-eyebrow">{isSignIn ? "NEW TO LEDGER?" : "ALREADY WITH LEDGER?"}</p>
-      <AuthArtwork />
+      <LedgerPhoneMockup className="auth-flip-phone-stage" showBadges />
       <div className="auth-flip-promo-copy">
         <h2>{isSignIn ? "Your payments, in clear view." : "Welcome back."}</h2>
         <p>
