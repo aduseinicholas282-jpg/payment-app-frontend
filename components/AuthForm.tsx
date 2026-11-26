@@ -33,7 +33,7 @@ export default function AuthForm() {
 
   return (
     <div className="auth-shell">
-      <div className="auth-heading">
+      <div className="auth-heading" data-mode={mode}>
         <div className="auth-brand">
         <div className="auth-logo" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
